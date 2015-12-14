@@ -5,7 +5,7 @@
 
 var canvas;
 var context;
-var shapes = [];
+var leafs = [];
 var texts = [];
 var drops = [];
 var clouds = [];
@@ -27,6 +27,13 @@ function Drop(x,y,color){
     this.dy = Math.random();
 }
 
+function Leaf(x,y,color){
+    this.x = x;
+    this.y = y;
+    this.color = color;
+    this.fy = Math.random();
+}
+
 function Cloud(x,y,color){
     this.x = x;
     this.y = y;
@@ -43,7 +50,7 @@ function init(){
     canvas = document.getElementById('canvas');
     context = canvas.getContext('2d');
     
-    alert("Hello!\nClick on the screen for rain drops!");
+    //alert("Hello!\nClick on the screen for rain drops!");
     
     window.addEventListener('resize', resizeCanvas, false);
     window.addEventListener('orientationchange', resizeCanvas, false);
@@ -73,6 +80,7 @@ function handleClick(x,y,w){
     var colors = ["#000080", "#add8e6", "blue"];
     var color = colors[Math.floor(Math.random()*colors.length)];
         drops.push(new Drop(x,y,color));
+        leafs.push(new Leaf(x,y,color));
         clouds.push(new Cloud(x,y,color));
         squares.push(new Square(x,y,w,color));
         texts.push(new Text(x,y,w,color));
@@ -86,7 +94,11 @@ function handleClick(x,y,w){
    	 		    for(var i = 0; i<drops.length; i++){
         drawDrop(drops[i]);
 }
-  					    for(var i = 0; i<clouds.length; i++){
+  		   	 		  for(var i = 0; i<leafs.length; i++){
+        drawLeaf(leafs[i]);
+}
+  		
+  		                for(var i = 0; i<clouds.length; i++){
         drawCloud(clouds[i]);
     }
 } 
@@ -146,6 +158,41 @@ function drawDrop(drop){
 };
 
 
+function drawLeaf(leaf){
+    context.beginPath();
+    context.moveTo(leaf.x,leaf.y)
+    context.moveTo(leaf.x+81,leaf.y+121);
+    context.lineTo(leaf.x+10,leaf.y-25);
+    context.moveTo(leaf.x+10,leaf.y-25);
+    context.lineTo(leaf.x+13,leaf.y+32);
+    context.moveTo(leaf.x+13,leaf.y+32);
+    context.lineTo(leaf.x+46,leaf.y+50);
+    context.moveTo(leaf.x+46,leaf.y+50);
+    context.lineTo(leaf.x+72,leaf.y+51);
+    context.moveTo(leaf.x+72,leaf.y+51);
+    context.lineTo(leaf.x+81,leaf.y+43);
+    context.moveTo(leaf.x+81,leaf.y+43);
+    context.lineTo(leaf.x+104,leaf.y+52);
+    context.moveTo(leaf.x+104,leaf.y+52);
+    context.lineTo(leaf.x+111,leaf.y+46);
+    context.moveTo(leaf.x+111,leaf.y+46);
+    context.lineTo(leaf.x+83,leaf.y+40);
+    context.moveTo(leaf.x+83,leaf.y+40);
+    context.lineTo(leaf.x+75,leaf.y+20);
+    context.moveTo(leaf.x+75,leaf.y+20);
+    context.lineTo(leaf.x+57,leaf.y+8);
+    context.moveTo(leaf.x+57,leaf.y+8);
+    context.lineTo(leaf.x+81,leaf.y+121);
+    context.closePath();
+    context.fillStyle = 'white';
+    context.fill();
+    if (leaf.y + leaf.fy > canvas.height || leaf.y + leaf.fy < 0)
+        leaf.fy != -leaf.fy;
+    leaf.y += leaf.fy;
+};
+
+
+
 function drawSquare(square){
 	var sw = Math.floor(4);
 	var sx = Math.floor(Math.random() * canvas.width);
@@ -185,14 +232,17 @@ function resizeCanvas(){
     for(var i = 0; i<drops.length; i++){
         drawDrop(drops[i]);
     }
-        for(var i = 0; i<clouds.length; i++){
-        drawCloud(clouds[i]);
+        for(var i = 0; i<leafs.length; i++){
+        drawLeaf(leafs[i]);
     }
-            for(var i = 0; i<squares.length; i++){
-        drawSquare(squares[i]);
+            for(var i = 0; i<clouds.length; i++){
+         drawCloud(clouds[i]);
     }
-            for(var i = 0; i<texts.length; i++){
-        drawText(texts);
+                for(var i = 0; i<squares.length; i++){
+             drawSquare(squares[i]);
+    }
+                     for(var i = 0; i<texts.length; i++){
+                 drawText(texts);
     }
 
 
