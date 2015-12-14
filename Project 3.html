@@ -10,19 +10,8 @@ var texts = [];
 var drops = [];
 var clouds = [];
 var squares = [];
-var timer;
-var skyShapes = ['bolt'];
 
 
-function Shape(x, y, color) {
-		this.px = x;
-		this.py = y;
-		this.size = Math.random()*20+5;
-		this.hx = Math.random()*4-2;
-		this.hy = Math.random()*4-2;
-		this.color = color;
-		this.shape = skyShapes[Math.floor(Math.random()*skyShapes.length)];
-	  }
 function Square(x,y,w,color){
     this.sx = x;
     this.sy = y;
@@ -63,7 +52,7 @@ function init(){
         handleClick(event.clientX, event.clientY);
     };
     setInterval(handleClick,5);
-    timer = setInterval(newShape, 200);
+
     
 
 
@@ -77,14 +66,7 @@ function handleClick(x,y,w){
             found = true;
         }
 	}
-function newShape() {
-		var x = Math.random() * canvas.width;
-		var y = Math.random() * canvas.height;
-		var colorsx = ["red", "green", "blue", "orange", "purple", "yellow"];
-		var colory = colors[Math.floor(Math.random()*colors.length)];
-		shapes.push(new Shape(x, y, color));
-		
-	  }
+
     
     fillBackgroundColor();
     if(!found){
@@ -188,20 +170,6 @@ function drawCloud(cloud){
       context.lineWidth = 5;
       context.fillStyle = 'white';
       context.fill();
-      
-
-      context.beginPath();
-      context.moveTo(170, 80);
-      context.bezierCurveTo(130, 100, 130, 150, 230, 150);
-      context.bezierCurveTo(250, 180, 320, 180, 340, 150);
-      context.bezierCurveTo(420, 150, 420, 120, 390, 100);
-      context.bezierCurveTo(430, 40, 370, 30, 340, 50);
-      context.bezierCurveTo(320, 5, 250, 20, 250, 50);
-      context.bezierCurveTo(200, 5, 150, 20, 170, 80);
-      context.closePath();
-      context.lineWidth = 5;
-      context.fillStyle = 'white';
-      context.fill();
 
 };
 
@@ -226,19 +194,6 @@ function resizeCanvas(){
             for(var i = 0; i<texts.length; i++){
         drawText(texts);
     }
-    for (var i=0; i<shapes.length; i++) {
-			if (shapes[i].shape == 'bolt') {
-				drawBolt(shapes[i]);
-			} else if (shapes[i].shape == 'leaf') {
-				drawLeaf(shapes[i]);
-			} 
-			if (shapes[i].px + shapes[i].hx > canvas.width || shapes[i].px + shapes[i].hx < 0)
-				shapes[i].hx = -shapes[i].hx;
-			if (shapes[i].py + shapes[i].hy > canvas.height || shapes[i].py + shapes[i].hy < 0)
-				shapes[i].py = -shapes[i].hy;
-				shapes[i].px += shapes[i].hx;
-				shapes[i].py += shapes[i].hy;
-		}
 
 
 
