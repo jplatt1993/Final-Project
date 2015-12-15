@@ -9,10 +9,11 @@
         ux = Math.random(),
         uy = Math.random();
     var drops = [];
-    var clouds = [];
     var squares = [];
     var clouds = [];
-    var text;
+    var text, step = 190, steps = 255;
+            delay = 180;
+    var rgbstep = 120;
 
 
 
@@ -33,10 +34,6 @@
     }
 
 
-
-
-
-
               
     function init(){
         canvas = document.getElementById('canvas');
@@ -44,12 +41,14 @@
         //alert("Hello!\nClick on the screen for rain drops!");
         window.addEventListener('resize', resizeCanvas, false);
         window.addEventListener('orientationchange', resizeCanvas, false);
+        window.requestAnimationFrame(mainLoop)
         resizeCanvas()
+        Textfadeup(); 
         canvas.onclick = function(event){
             handleClick(event.clientX, event.clientY);
         };
         setInterval(handleClick,50);
-        setInterval(draw, -100);
+
 
 
 
@@ -102,14 +101,32 @@
     }
 
 
-function drawText(){
-	context.beginPath();
-	context.font= "35px Arial";
-  	context.fillStyle = "white";
-  	context.fillText("Drip, Drip, Drop, little April Shower...", 500, 50);
-  	context.closePath();
-  
-  }
+function Textfadeup() {
+                rgbstep++;
+                //context.clearRect(0, 0, canvas.width, canvas.height);
+                context.fillStyle = "rgb(" + rgbstep + "," + rgbstep + "," + rgbstep + ")"
+                context.fillText("Drip, drip, drop, little April shower...", 500, canvas.height);
+                context.font= "40px Arial";
+                if (rgbstep < 255)
+                    var t = setTimeout('Textfadeup()', 10);
+                if (rgbstep == 255) {
+                    Textfadedown();
+                }
+    }
+
+    function Textfadedown() {
+             rgbstep=rgbstep-1;
+               // context.clearRect(0, 0, canvas.width, canvas.height);
+                context.fillStyle = "rgb(" + rgbstep + "," + rgbstep + "," + rgbstep + ")"
+                context.fillText("Drip, drip, drop, little April shower...", 500, canvas.height);
+                context.font= "40px Arial";
+                if (rgbstep > 30)
+                    var t = setTimeout('Textfadedown()', 10);
+                if (rgbstep == 30) {
+                    Textfadeup();
+                }
+            }   
+
    
        
 
@@ -224,7 +241,7 @@ function drawText(){
 
     }
 
-    function draw() {
+function mainLoop(){
       drawCloud(ox, oy, 500);
       if (ox + ux > canvas.width || ox + ux < 0)
         ux = -ux;   
@@ -232,12 +249,7 @@ function drawText(){
         uy = -uy;
       ox += ux;
      
-           drawText(ox, oy, 500);
-      if (ox + ux > canvas.width || ox + ux < 0)
-        ux = -ux;   
-        if (oy + uy > canvas.height || oy + uy < 0)
-        uy = -uy;
-      ox += ux;
+    requestAnimationFrame(mainLoop);
      }
 
 
